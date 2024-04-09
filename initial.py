@@ -10,7 +10,6 @@ groq_api_key = os.getenv("GROQ_API_KEY")
 
 class UserRequest(BaseModel):
     query: str
-    topic: str
 
 app = FastAPI()
 
@@ -73,16 +72,27 @@ async def process_request(request: UserRequest):
         Ensure your work aligns with the AI QUERY AGENT Directive's objectives, following the specified guidelines and protocols.
         </Instructions>
         """
-  
+    parser = StrOutputParser()
+    
     # Define the prompt structure
     prompt = PromptTemplate(
         input_variables=["query"],
         template=prompt_template,
     )
 
-    llm_chain = LLMChain(llm=llm, prompt=prompt)
-
-    # Pass the context and question to the Langchain chain
+    llm_chain = prompt | llm | parser
+    
     result_chain = llm_chain.invoke({"query": query})
 
-    return result_chain
+    query_payload = {"query": result_chain}
+    render_url = "https://something"
+    response = requests.post(render_url, json=query_payload)
+    if response.status_code == 200:
+        return {"message": "Query successfully sent to next part of the render chain process."}
+    else:
+        return {
+            "error": "Failed to send render query.",
+            "statusCode": response.status_code,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
