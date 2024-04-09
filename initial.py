@@ -67,7 +67,9 @@ async def process_request(request: UserRequest):
         - After completing the query evaluation, review your analysis, attribute identification, summaries, and data field completion for accuracy and comprehensiveness.
         - Identify areas for improvement in understanding, categorization, and evaluation of the query.
         - Refine your approach based on insights gained and apply it to subsequent query evaluations. Repeat the cycle for continuous improvement.
-
+        
+        **Task Definition**:
+        - Formulate the final task that encompasses all the insights derived from the query, clearly stating what needs to be accomplished next. This task should be actionable, specific, and directly linked to the insights and attributes identified during the query analysis.
         Ensure your work aligns with the AI QUERY AGENT Directive's objectives, following the specified guidelines and protocols.
         </Instructions>
         """
